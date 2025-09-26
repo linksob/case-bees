@@ -1,7 +1,8 @@
+#!/bin/bash
 set -e
 
 #Run AWS integration
-pytest tests/integration/aws/test_aws_connectivity.py --maxfail=1 --disable-warnings
+pytest -s tests/integration/test_aws_connectivity.py --maxfail=1 --disable-warnings
 
 #Run Glue jobs tests
 pytest glue_jobs/tests --disable-warnings

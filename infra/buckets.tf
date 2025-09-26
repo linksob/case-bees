@@ -1,3 +1,4 @@
+############################ ATHENA WORKGROUP #############################
 resource "aws_athena_workgroup" "primary" {
   name = "primary"
   configuration {
@@ -29,7 +30,6 @@ resource "aws_s3_bucket" "scripts" {
 }
 
 resource "aws_s3_bucket" "athena" {
-  # Desativa o bloqueio de políticas públicas para permitir bucket policy customizada
   bucket = var.athena_bucket
   force_destroy = true
 

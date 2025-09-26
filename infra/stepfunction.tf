@@ -19,6 +19,17 @@ resource "aws_sfn_state_machine" "bees_brewery_pipeline" {
   definition = templatefile("${path.module}/../orchestration/stepfunction_bees_brewery_pipeline.json", {
     lambda_bronze_arn = aws_lambda_function.bronze_ingestion.arn
   })
+  depends_on = [
+    aws_lambda_function.bronze_ingestion,
+    aws_glue_catalog_database.db_bees_bronze,
+    aws_glue_catalog_database.db_bees_silver,
+    aws_glue_catalog_database.db_bees_gold,
+    aws_glue_catalog_table.tb_bees_breweries_bronze,
+    aws_glue_catalog_table.tb_bees_breweries_silver,
+    aws_glue_catalog_table.tb_bees_breweries_gold,
+    aws_glue_job.job_bronze_to_silver,
+    aws_glue_job.job_silver_to_gold
+  ]
 }
 
 #####################################################################################

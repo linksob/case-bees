@@ -1,24 +1,20 @@
-#DATABASE CREATION
+###############################DATABASE CREATION#######################################
 resource "aws_glue_catalog_database" "db_bees_bronze" {
   name = "db_bees_bronze"
 }
 
-# ROLE FOR LAKE FORMATION
+######################################################################################
+#####################################ROLE FOR TABLES##################################
 resource "aws_iam_role" "lakeformation_user_bronze" {
   name = "lakeformation_user_bronze"
   assume_role_policy = file("${path.module}/policies/trust/lakeformation_trust.json")
-}
 
-resource "aws_iam_policy" "lakeformation_policy_bronze" {
-  name   = "lakeformation-policy-bronze"
-  policy = file("${path.module}/policies/policy/lakeformation_policy.json")
+  inline_policy {
+    name   = "lakeformation-policy-bronze"
+    policy = file("${path.module}/policies/policy/lakeformation_policy.json")
+  }
 }
-
-resource "aws_iam_role_policy_attachment" "lakeformation_policy_attach_bronze" {
-  role       = aws_iam_role.lakeformation_user_bronze.name
-  policy_arn = aws_iam_policy.lakeformation_policy_bronze.arn
-}
-
+###################################################################################
 ############################### BRONZE TABLE DEFINITION ###########################
 resource "aws_glue_catalog_table" "tb_bees_breweries_bronze" {
   name          = "tb_bees_breweries_bronze"
@@ -111,3 +107,23 @@ resource "aws_glue_catalog_table" "tb_bees_breweries_bronze" {
   }
 }
 #############################################################################
+############################ LAKE FORMATION PERMISSIONS ####################
+resource "aws_lakeformation_permissions" "bronze_crud" {
+  principal = aws_iam_role.lakeformation_user_bronze.arn
+
+  permissions = [
+    "SELECT",
+    "INSERT",
+    "DELETE",
+    "ALTER",
+    "DROP",
+    "DESCRIBE"
+  ]
+
+  permissions_with_grant_option = []
+
+  table {
+    database_name = aws_glue_catalog_database.db_bees_bronze.name
+    name          = aws_glue_catalog_table.tb_bees_breweries_bronze.name
+  }
+}

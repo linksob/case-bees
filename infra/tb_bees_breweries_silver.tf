@@ -1,24 +1,21 @@
-#DATABASE CREATION
+###############################DATABASE CREATION#######################################
 resource "aws_glue_catalog_database" "db_bees_silver" {
   name = "db_bees_silver"
 }
 
-# ROLE FOR TABLES
+######################################################################################
+#####################################ROLE FOR TABLES##################################
 resource "aws_iam_role" "lakeformation_user_silver" {
   name = "lakeformation_user_silver"
   assume_role_policy = file("${path.module}/policies/trust/lakeformation_trust.json")
+
+  inline_policy {
+    name   = "lakeformation-policy-silver"
+    policy = file("${path.module}/policies/policy/lakeformation_policy.json")
+  }
 }
 
-resource "aws_iam_policy" "lakeformation_policy_silver" {
-  name   = "lakeformation-policy-silver"
-  policy = file("${path.module}/policies/policy/lakeformation_policy.json")
-}
-
-resource "aws_iam_role_policy_attachment" "lakeformation_policy_attach_silver" {
-  role       = aws_iam_role.lakeformation_user_silver.name
-  policy_arn = aws_iam_policy.lakeformation_policy_silver.arn
-}
-
+###################################################################################
 ############################### SILVER TABLE DEFINITION ###########################
 resource "aws_glue_catalog_table" "tb_bees_breweries_silver" {
   name          = "tb_bees_breweries_silver"

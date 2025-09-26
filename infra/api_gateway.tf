@@ -24,6 +24,7 @@ resource "aws_api_gateway_integration" "gold_lambda" {
   integration_http_method = "POST"
   type        = "AWS_PROXY"
   uri         = aws_lambda_function.api_gold.invoke_arn
+  depends_on  = [aws_lambda_function.api_gold]
 }
 
 resource "aws_api_gateway_deployment" "gold" {
