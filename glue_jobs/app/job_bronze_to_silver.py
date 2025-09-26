@@ -48,7 +48,7 @@ def alert_sns( message):
 
 def read_bronze():
     today = datetime.now().strftime("%Y%m%d")
-    bronze_path = args['BRONZE_PATH'] + today
+    bronze_path = os.path.join(args['BRONZE_PATH'], f'transaction_date={today}')
     df = spark.read.json(bronze_path)
     df.show(5)
     return df

@@ -1,0 +1,9 @@
+pytest
+boto3
+unidecode
+moto
+pyspark
+requests
+pytest-mock
+pytest-cov
+coverage

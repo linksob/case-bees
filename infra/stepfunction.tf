@@ -16,7 +16,9 @@ resource "aws_iam_role_policy" "stepfunction_bees_brewery_policy" {
 resource "aws_sfn_state_machine" "bees_brewery_pipeline" {
   name     = "bees-brewery-pipeline"
   role_arn = aws_iam_role.stepfunction_bees_brewery_role.arn
-  definition = file("${path.module}/../orchestration/stepfunction_bees_brewery_pipeline.json")
+  definition = templatefile("${path.module}/../orchestration/stepfunction_bees_brewery_pipeline.json", {
+    lambda_bronze_arn = aws_lambda_function.bronze_ingestion.arn
+  })
 }
 
 #####################################################################################

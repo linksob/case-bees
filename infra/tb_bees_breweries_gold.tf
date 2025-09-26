@@ -13,6 +13,7 @@ resource "aws_iam_role_policy_attachment" "lakeformation_policy_attach_gold" {
   role       = aws_iam_role.lakeformation_user_gold.name
   policy_arn = aws_iam_policy.lakeformation_policy_gold.arn
 }
+
 #DATABASE CREATION
 resource "aws_glue_catalog_database" "db_bees_gold" {
   name = "db_bees_gold"
