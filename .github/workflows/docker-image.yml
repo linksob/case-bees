@@ -1,0 +1,37 @@
+name: Build, Test and Deploy Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-test-deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build Docker image
+        run: docker build -t bees-pipeline .
+
+      - name: Create .env file for AWS credentials
+        run: |
+          echo "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}" > .env
+          echo "AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}" >> .env
+          echo "AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}" >> .env
+
+      - name: Run all tests in Docker (unit + integration)
+        run: |
+          docker run --rm --env-file .env -v ${{ github.workspace }}:/workspace bees-pipeline pytest
+
+      - name: Run Terraform apply in Docker
+        run: |
+          docker run --rm --env-file .env -v ${{ github.workspace }}:/workspace bees-pipeline bash -c "cd infra && terraform init && terraform plan && terraform apply -auto-approve"
