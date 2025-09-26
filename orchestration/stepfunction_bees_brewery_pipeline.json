@@ -1,0 +1,27 @@
+{
+  "Comment": "Orchestration of Bees Brewery Data Pipeline",
+  "StartAt": "LambdaBronzeIngestion",
+  "States": {
+    "LambdaBronzeIngestion": {
+      "Type": "Task",
+      "Resource": "${lambda_bronze_arn}",
+      "Next": "GlueBronzeToSilver"
+    },
+    "GlueBronzeToSilver": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::glue:startJobRun.sync",
+      "Parameters": {
+        "JobName": "job-bronze_to_silver"
+      },
+      "Next": "GlueSilverToGold"
+    },
+    "GlueSilverToGold": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::glue:startJobRun.sync",
+      "Parameters": {
+        "JobName": "job-silver_to_gold"
+      },
+      "End": true
+    }
+  }
+}

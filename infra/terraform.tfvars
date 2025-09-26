@@ -1,0 +1,8 @@
+project_prefix  = "bees-brewery"
+bronze_bucket   = "bees-brewery-data-bronze"
+silver_bucket   = "bees-brewery-data-silver"
+gold_bucket     = "bees-brewery-data-gold"
+scripts_bucket  = "bees-brewery-scripts"
+athena_bucket   = "bees-breweries-athena-query-results"
+sns_email_endpoint = "lincoln.sobral@hotmail.com"
+tags = { Owner = "Lincoln", Project = "bees-brewery" }

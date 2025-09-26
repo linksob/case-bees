@@ -1,0 +1,53 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "athena:StartQueryExecution",
+        "athena:GetQueryExecution",
+        "athena:GetQueryResults",
+        "athena:ListDataCatalogs",
+        "athena:GetDataCatalog",
+        "athena:CreateDataCatalog",
+        "athena:UpdateDataCatalog",
+        "athena:DeleteDataCatalog",
+        "athena:GetDatabase",
+        "athena:ListDatabases",
+        "athena:GetTableMetadata",
+        "athena:ListTableMetadata",
+        "glue:GetDatabase", 
+        "glue:GetTable", 
+        "glue:GetTables",
+        "glue:GetPartitions",
+        "s3:GetObject",
+        "s3:PutObject",
+        "s3:ListBucket",
+        "s3:GetBucketLocation",
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents",
+        "sns:Publish"
+      ],
+      "Resource": [
+        "arn:aws:athena:*:*:*",
+        "arn:aws:athena:*:*:workgroup/*",
+        "arn:aws:athena:*:*:datacatalog/*",
+        "arn:aws:glue:*:*:catalog",
+        "arn:aws:glue:*:*:database/*",
+        "arn:aws:glue:*:*:table/*",
+        "arn:aws:s3:::*",
+        "arn:aws:s3:::bees-breweries-athena-query-results",
+        "arn:aws:s3:::bees-breweries-athena-query-results/*",
+        "arn:aws:s3:::bees-brewery-data-bronze",
+        "arn:aws:s3:::bees-brewery-data-bronze/*",
+        "arn:aws:s3:::bees-brewery-data-silver",
+        "arn:aws:s3:::bees-brewery-data-silver/*",
+        "arn:aws:s3:::bees-brewery-data-gold",
+        "arn:aws:s3:::bees-brewery-data-gold/*",
+        "arn:aws:logs:*:*:*",
+        "arn:aws:sns:*:*:*"
+      ]
+    }
+  ]
+}
