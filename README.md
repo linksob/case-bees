@@ -166,6 +166,7 @@ docker run --rm -it --env-file .env -v $(pwd):/workspace bees-pipeline
     docker run --rm -it --env-file .env -v $(pwd):/workspace bees-pipeline bash -c "cd infra && terraform init && terraform plan && terraform apply"
     ```
 - Data partitioning follows Hive style (transaction_date=YYYY-MM-DD).
+- __Lake Formation Permissions__: If execution fails due to Lake Formation permission errors, you must manually add the user or role running Terraform as a Lake Formation administrator via the AWS Console. This is required because Lake Formation does not allow a user to self-assign as admin through Terraform or IAM policy—only an existing admin can grant this privilege.
 
 ---
 
