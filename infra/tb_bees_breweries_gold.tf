@@ -1,23 +1,22 @@
-# ROLE FOR LAKE FORMATION
-resource "aws_iam_role" "lakeformation_user_gold" {
-  name = "lakeformation_user_gold"
-  assume_role_policy = file("${path.module}/policies/trust/lakeformation_trust.json")
-}
-
-resource "aws_iam_policy" "lakeformation_policy_gold" {
-  name   = "lakeformation-policy-gold"
-  policy = file("${path.module}/policies/policy/lakeformation_policy.json")
-}
-
-resource "aws_iam_role_policy_attachment" "lakeformation_policy_attach_gold" {
-  role       = aws_iam_role.lakeformation_user_gold.name
-  policy_arn = aws_iam_policy.lakeformation_policy_gold.arn
-}
-#DATABASE CREATION
+###############################DATABASE CREATION#######################################
 resource "aws_glue_catalog_database" "db_bees_gold" {
   name = "db_bees_gold"
 }
 
+######################################################################################
+#####################################ROLE FOR TABLES##################################
+resource "aws_iam_role" "lakeformation_user_gold" {
+  name = "lakeformation_user_gold"
+  assume_role_policy = file("${path.module}/policies/trust/lakeformation_trust.json")
+
+  inline_policy {
+    name   = "lakeformation-policy-gold"
+    policy = file("${path.module}/policies/policy/lakeformation_policy.json")
+  }
+}
+
+
+###################################################################################
 ############################### GOLD TABLE DEFINITION ###########################
 resource "aws_glue_catalog_table" "tb_bees_breweries_gold" {
   name          = "tb_bees_breweries_gold"

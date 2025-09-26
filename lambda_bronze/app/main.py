@@ -61,13 +61,18 @@ def lambda_handler(event, context):
         page += 1
 
     now = datetime.now()
-    key = f"bronze/{now:%Y%m%d}/breweries_{now:%Y%m%d_%H%M%S}.json"
+    transaction_date = now.strftime("%Y%m%d")
+    
+    for b in breweries:
+        b["transaction_date"] = transaction_date
+    key = f"bronze/transaction_date={transaction_date}/breweries_{now:%Y%m%d_%H%M%S}.json"
 
+    body = "\n".join(json.dumps(b) for b in breweries)
     try:
         s3.put_object(
             Bucket=S3_BUCKET,
             Key=key,
-            Body=json.dumps(breweries),
+            Body=body,
             ContentType="application/json"
         )
     except Exception as e:

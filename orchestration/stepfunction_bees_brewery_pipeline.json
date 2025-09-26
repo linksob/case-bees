@@ -11,7 +11,7 @@
       "Type": "Task",
       "Resource": "arn:aws:states:::glue:startJobRun.sync",
       "Parameters": {
-        "JobName": "job-bronze_to_silver"
+        "JobName": "job_bees_brewery_bronze_to_silver"
       },
       "Next": "GlueSilverToGold"
     },
@@ -19,7 +19,7 @@
       "Type": "Task",
       "Resource": "arn:aws:states:::glue:startJobRun.sync",
       "Parameters": {
-        "JobName": "job-silver_to_gold"
+        "JobName": "job_bees_brewery_silver_to_gold"
       },
       "End": true
     }
