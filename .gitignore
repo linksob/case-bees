@@ -10,6 +10,12 @@
 crash.log
 crash.*.log
 
+#tests
+__pycache__/
+*.pyc
+.pytest_cache/
+.pytest_cache/*
+.coverage
 
 
 # Ignore override files as they are usually used to override resources locally and so
