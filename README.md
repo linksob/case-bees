@@ -69,35 +69,35 @@ case-bees/
 ## Components Created
 
 - **Glue Jobs:** ETLs to transform data between Bronze, Silver, and Gold layers.
-  - ``job_bees_brewery_bronze_to_silver``: Ingest from layer Bronze to Silver
-  - ``job_bees_brewery_silver_to_gold``: Ingest from layer Silver to Gold
+    - ``job_bees_brewery_bronze_to_silver``: Ingest from layer Bronze to Silver
+    - ``job_bees_brewery_silver_to_gold``: Ingest from layer Silver to Gold
 - **Lambdas:**
-  - `lambda_bronze`: Ingests external data to S3 (NDJSON, partitioned).
-  - `lambda_api`: Athena query with parameters (transaction_date, brewery_id) via API Gateway.
+    - `lambda_bronze`: Ingests external data to S3 (NDJSON, partitioned).
+    - `lambda_api`: Athena query with parameters (transaction_date, brewery_id) via API Gateway.
 - **Infrastructure:**
-  - All infrastructure is provisioned using **Terraform** (files in `infra/`).
-  - **S3 Buckets:**
+    - All infrastructure is provisioned using **Terraform** (files in `infra/`).
+- **S3 Buckets:**
     - `bees-breweries-athena-query-results`
     - `bees-brewery-data-bronze`
     - `bees-brewery-data-silver`
     - `bees-brewery-data-gold`
     - `bees-brewery-scripts`
-  - **Glue Databases & Tables:**
+- **Glue Databases & Tables:**
     - Database: `db_bees_bronze` / Table: `tb_bees_breweries_bronze`
     - Database: `db_bees_silver` / Table: `tb_bees_breweries_silver`
     - Database: `db_bees_gold` / Table: `tb_bees_breweries_gold`
-  - **Lambda Functions:**
+- **Lambda Functions:**
     - `lambda_bronze` (bronze ingestion)
     - `lambda_api_gold` (API)
-  - **Step Functions:**
+- **Step Functions:**
     - `bees_brewery_pipeline` (orchestration)
-  - **EventBridge:**
+- **EventBridge:**
     - `bees_brewery_eventbridge` (event rule to start the flux)
-  - **SNS Topic:**
+- **SNS Topic:**
     - `bees_alert_topic`: Alert and monitoring
-  - **API Gateway:**
+- **API Gateway:**
     - `gold-api` (REST API calling lambda function)
-  - **IAM Roles & Policies:**
+- **IAM Roles & Policies:**
     - Roles: `lakeformation_user_bronze`, `lakeformation_user_silver`, `lakeformation_user_gold`, `glue_bees_breweries_role`, `lambda_bronze_role`, `lambda_api_gold_role`
     - Policies: All custom policies are externalized in `infra/policies/policy/*.json` and referenced via `file()` in Terraform.
 - **Tests:**
